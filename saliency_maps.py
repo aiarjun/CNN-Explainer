@@ -28,15 +28,15 @@ def get_image_saliency_grids(X, y, idx2label, saliency):
   N = X.shape[0]
   figures = []
   for i in range(N):
-      fig = plt.figure()
-      ax = fig.add_subplot(1, 2, 1)
-      ax.imshow(X[i])
-      ax.axis('off')
-      ax.set_title(idx2label[y[i]])
-      ax = fig.add_subplot(1, 2, 2)
-      ax.imshow(saliency[i], cmap=plt.cm.hot)
-      ax.axis('off')
-      figures.append(fig)
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 2, 1)
+    ax.imshow(X[i])
+    ax.axis('off')
+    ax.set_title(idx2label[y[i]])
+    ax = fig.add_subplot(1, 2, 2)
+    ax.imshow(saliency[i], cmap=plt.cm.hot)
+    ax.axis('off')
+    figures.append(fig)
   return figures 
 
 if __name__ == '__main__':
