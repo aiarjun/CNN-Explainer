@@ -61,15 +61,15 @@ def create_class_visualization(target_y, model, idx2label, dtype, **kwargs):
       plt.axis('off')
       plt.show()
 
-    return deprocess(img.data.cpu())
+  return deprocess(img.data.cpu())
 
 if __name__ == '__main__':
-  parser = argparse.ArgumentParser(description = 'Saliency')
+  parser = argparse.ArgumentParser(description = 'Class visualization')
   parser.add_argument('--class_index', type = int, help='Class index of class to be visualized', default = random.randint(0,999))
   parser.add_argument('--output_dir', help='Directory to save output', default = 'saliency_outputs')
 
   args = parser.parse_args()
-  X, y, idx2label = load_imagenet_val(count=args.num_images)
+  X, y, idx2label = load_imagenet_val() 
   model = get_pretrained_squeezenet()
   dtype = torch.FloatTensor
   model.type(dtype)
@@ -80,4 +80,4 @@ if __name__ == '__main__':
     os.mkdir(args.output_dir)
 
   random_str = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
-  out.savefig(os.path.join(args.output_dir, 'Class_viz_%s_%s.png' % (idx2label[target_y], random_str)))
+  out.save(os.path.join(args.output_dir, 'Class_viz_%s_%s.png' % (idx2label[target_y], random_str)))

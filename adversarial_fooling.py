@@ -37,7 +37,11 @@ def make_fooling_image(X, target_y, model):
 def get_image_fooling_grids(X, y, idx2label, idx, X_fooling, target_y):
   X_fooling_np = deprocess(X_fooling.clone())
   X_fooling_np = np.asarray(X_fooling_np).astype(np.uint8)
+
+
   fig = plt.figure()
+
+  
   ax = fig.add_subplot(1, 4, 1)
   ax.imshow(X[idx])
   ax.set_title(idx2label[y[idx]])
@@ -48,14 +52,14 @@ def get_image_fooling_grids(X, y, idx2label, idx, X_fooling, target_y):
   ax.set_title(idx2label[target_y])
   ax.axis('off')
 
-  fig.add_subplot(1, 4, 3)
+  ax=fig.add_subplot(1, 4, 3)
   X_pre = preprocess(Image.fromarray(X[idx]))
   diff = np.asarray(deprocess(X_fooling - X_pre, should_rescale=False))
   ax.imshow(diff)
   ax.set_title('Difference')
   ax.axis('off')
 
-  fig.add_subplot(1, 4, 4)
+  ax=fig.add_subplot(1, 4, 4)
   diff = np.asarray(deprocess(10 * (X_fooling - X_pre), should_rescale=False))
   ax.imshow(diff)
   ax.set_title('Magnified difference (10x)')
@@ -64,11 +68,11 @@ def get_image_fooling_grids(X, y, idx2label, idx, X_fooling, target_y):
   return fig
 
 if __name__ == '__main__':
-  parser = argparse.ArgumentParser(description = 'Saliency')
+  parser = argparse.ArgumentParser(description = 'Fooling')
   parser.add_argument('--num_images', type = int, help='Number of images', required=True)
   parser.add_argument('--image_index', type=int, help='Index of image whose gradient is to ascended', required=True)
   parser.add_argument('--class_index', type = int, help='Class index of class whose score is to be maximized', default = random.randint(0,999))
-  parser.add_argument('--output_dir', help='Directory to save output', default = 'fooling_outputs')
+  parser.add_argument('--output_dir', help='Directory to save output', default = 'outputs')
 
   args = parser.parse_args()
   X, y, idx2label = load_imagenet_val(count=args.num_images)
@@ -78,7 +82,7 @@ if __name__ == '__main__':
   target_y = args.class_index
   X_fooling = make_fooling_image(X_tensor[idx:idx+1], target_y, model)
 
-  grid = get_image_fooling_grids(X, y, idx2label, saliency)
+  grid = get_image_fooling_grids(X, y, idx2label, idx, X_fooling ,target_y)
 
   if not os.path.isdir(args.output_dir):
     os.mkdir(args.output_dir)

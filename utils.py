@@ -4,6 +4,7 @@ import torchvision.transforms as T
 import numpy as np
 from scipy.ndimage.filters import gaussian_filter1d
 from PIL import Image
+import random
 
 SQUEEZENET_MEAN = np.array([0.485, 0.456, 0.406], dtype=np.float32)
 SQUEEZENET_STD = np.array([0.229, 0.224, 0.225], dtype=np.float32)
@@ -56,8 +57,9 @@ def load_imagenet_val(path = 'data/imagenet_val_25.npz', count=None):
     f = np.load(path, allow_pickle=True)
     X = f['X']
     y = f['y']
-    idx2label = f['label_map'].item()
+    idx2label = f['label_map'].item()    
     if count is not None:
-        X = X[:count]
-        y = y[:count]
+      idxs = random.choices(range(X.shape[0]), k=count)
+      X = X[idxs]
+      y = y[idxs]
     return X, y, idx2label
