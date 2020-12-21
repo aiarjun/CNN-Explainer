@@ -11,7 +11,7 @@ This repository implements the following techniques for interpreting convolution
 
 Apart from this, the following techniques are also implemented
 
-1. Adversarial fooling (by backpropagating classification error of required fooling class into the image) <sup>[5]</sup>
+1. Adversarial fooling (by backpropagating gradients w.r.t. to classification error of required fooling class into the image) <sup>[5]</sup>
 
 ## References
 
